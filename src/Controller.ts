@@ -32,7 +32,7 @@ class Controller {
         this.renderer.canvas.addEventListener('mousemove', this.handleMouseMove)
         this.renderer.canvas.addEventListener('mouseup', this.handleMouseUp)
         this.renderer.canvas.addEventListener('wheel', this.handleMouseScroll)
-        //window.addEventListener('resize', this.handleResize)
+        window.addEventListener('resize', this.handleResize)
     }
 
     public stop() {
@@ -40,7 +40,7 @@ class Controller {
         this.renderer.canvas.removeEventListener('mousemove', this.handleMouseMove)
         this.renderer.canvas.removeEventListener('mouseup', this.handleMouseUp)
         this.renderer.canvas.removeEventListener('wheel', this.handleMouseScroll)
-        //window.removeEventListener('resize', this.handleResize)
+        window.removeEventListener('resize', this.handleResize)
     }
 
     private handleMouseDown(e: MouseEvent) {
@@ -73,9 +73,11 @@ class Controller {
         this.renderer.render(this.scene, this.camera)
     }
 
-    private handleResize() {
+    public handleResize() {
         const size: Vector = this.resizer.resize()
-        this.renderer.setRenderSize(size)
+        this.renderer.canvas.style.width = `${size.x}px`
+        this.renderer.canvas.style.height = `${size.y}px`
+        this.camera.setRenderMatrix(this.renderer.size, size)
     }
 
     private getCoordinatesFromEvent(e: MouseEvent) {

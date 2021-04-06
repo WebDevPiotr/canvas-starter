@@ -16,7 +16,7 @@ class CanvasResizer {
         const isContainerPanoramic = this.isPanoramic(containerSize)
         const isCanvasPanoramic = this.isPanoramic(canvasSize)
 
-        return ResizeStrategyProvider.get(isContainerPanoramic, isCanvasPanoramic).apply(containerSize, ratio)
+        return ResizeStrategyProvider.get(isContainerPanoramic, isCanvasPanoramic)(containerSize, ratio)
     }
 
     private isPanoramic(size: Vector): boolean {

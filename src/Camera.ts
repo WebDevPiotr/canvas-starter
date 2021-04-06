@@ -11,10 +11,10 @@ type Viewport = {
 
 class Camera {
 
-    private _zoomScalar: number
+    private _zoomScalar: number = 1
 
-    private _normalization: Matrix
-    private _localToGlobal: Matrix
+    private _projection: Matrix = Matrix.ones()
+    private _localToGlobal: Matrix = Matrix.ones()
 
     private _zoom: Matrix = Matrix.ones()
     private _zoomInv: Matrix = Matrix.ones()
@@ -22,15 +22,15 @@ class Camera {
     private _translate: Matrix = Matrix.ones()
     private _translateInv: Matrix = Matrix.ones()
 
-    private _transform: Matrix
+    private _render: Matrix = Matrix.ones()
 
-    private _canvasSize: Vector
+    private _canvasSize: Vector = new Vector()
 
     public setRenderMatrix(canvasSize: Vector, renderSize: Vector) {
         this._canvasSize = canvasSize
-        this._normalization = Matrix.fromValues([[1, 0, canvasSize.x / 2], [0, -1, canvasSize.y / 2], [0, 0, 1]])
+        this._projection = Matrix.fromValues([[1, 0, canvasSize.x / 2], [0, -1, canvasSize.y / 2], [0, 0, 1]])
         let renderScale = Matrix.fromValues([[renderSize.x / canvasSize.x, 0, 0], [0, renderSize.y / canvasSize.y, 0], [0, 0, 1]])
-        this._localToGlobal = renderScale.multiplyByMatrix(this._normalization).getInverseMatrix()
+        this._localToGlobal = renderScale.multiplyByMatrix(this._projection).getInverseMatrix()
         this.update()
     }
 
@@ -49,7 +49,7 @@ class Camera {
     }
 
     public zoomOut() {
-        this._zoomScalar = clamp(this._zoomScalar * 1.1, 1, 3)
+        this._zoomScalar = clamp(this._zoomScalar / 1.1, 1, 3)
         this._zoom = Matrix.fromValues([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
         this._zoomInv = this._zoom.getInverseMatrix()
         this.update()
@@ -66,7 +66,7 @@ class Camera {
     }
 
     private update() {
-        this._transform = this._normalization.multiplyByMatrix(this._zoom).multiplyByMatrix(this._translate)
+        this._render = this._projection.multiplyByMatrix(this._zoom).multiplyByMatrix(this._translate)
     }
 
     private calcCorrection() {
@@ -92,6 +92,7 @@ class Camera {
 
     get translate(): Matrix { return this._translate }
     get translateInv(): Matrix { return this._translateInv }
+    get render(): Matrix { return this._render }
 }
 
 export default Camera

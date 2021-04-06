@@ -3,6 +3,7 @@ import Renderer from './Renderer'
 import ImageLoader, { ImageSource } from './ImageLoader'
 import Camera from './Camera'
 import Controller from './Controller'
+import Vector from './Utils/Vector2'
 
 class CanvasFacade {
 
@@ -21,6 +22,11 @@ class CanvasFacade {
 
     public async load(source: ImageSource, layerIndex: number) {
         const image: HTMLImageElement = await ImageLoader.load(source)
+        if(this.scene.layers.size === 0) {
+            const imageSize = new Vector(image.width, image.height)
+            this.renderer.setSize(imageSize)
+            this.controller.handleResize()
+        }
         this.scene.add(image, layerIndex)
         this.renderer.render(this.scene, this.camera)
     }
