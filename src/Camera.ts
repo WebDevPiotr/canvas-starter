@@ -11,11 +11,10 @@ type Viewport = {
 
 class Camera {
 
-    private _zoomScalar: number = 1
-
     private _projection: Matrix3 = Matrix3.ones()
     private _localToGlobal: Matrix3 = Matrix3.ones()
 
+    private _zoomScalar: number = 1
     private _zoom: Matrix3 = Matrix3.ones()
     private _zoomInv: Matrix3 = Matrix3.ones()
 
@@ -90,8 +89,12 @@ class Camera {
         }
     }
 
+    get projection(): Matrix3 { return this._projection }
+    get localToGlobal(): Matrix3 { return this._localToGlobal }
     get translate(): Matrix3 { return this._translate }
     get translateInv(): Matrix3 { return this._translateInv }
+    get zoom(): Matrix3 { return this._zoom }
+    get zoomInv(): Matrix3 { return this._zoomInv }
     get render(): Matrix3 { return this._render }
 }
 

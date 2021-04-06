@@ -37,9 +37,9 @@ describe('Matrix tests', () => {
     })
 
     it('should calculate transposed matrix', () => {
-        let inverseMatrix = new Matrix3([[2, 5, 7], [6, 3, 4], [5, -2, -2]]).getTransposedMatrix()
+        let transposedMatrix = new Matrix3([[2, 5, 7], [6, 3, 4], [5, -2, -2]]).getTransposedMatrix()
         let result = new Matrix3([[2, 6, 5], [5, 3, -2], [7, 4, -2]])
-        expect(inverseMatrix).toEqual(result)
+        expect(transposedMatrix).toEqual(result)
     })
 
     it('should calculate inverse matrix', () => {

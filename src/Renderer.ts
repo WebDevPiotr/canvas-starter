@@ -22,6 +22,11 @@ class Renderer {
         this.canvas.height = size.y
     }
 
+    public setRenderSize(size: Vector2){
+        this.canvas.style.width = `${size.x}px`
+        this.canvas.style.height = `${size.y}px`
+    }
+
     public render(scene: Scene, camera: Camera){
         this._context.save()
         this._context.fillStyle = 'white'

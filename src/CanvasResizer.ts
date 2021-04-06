@@ -20,7 +20,7 @@ class CanvasResizer {
     }
 
     private isPanoramic(size: Vector2): boolean {
-        return size.x > size.y
+        return size.x >= size.y
     }
 }
 
@@ -29,7 +29,7 @@ export default CanvasResizer
 type ResizeStrategy = (containerSize: Vector2, ratio: number) => Vector2
 
 const containerPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
-    if (containerSize.x / ratio > containerSize.y)
+    if (containerSize.x / ratio >= containerSize.y)
         return new Vector2(containerSize.y * ratio, containerSize.y)
     else
         return new Vector2(containerSize.x, containerSize.x / ratio)
@@ -44,8 +44,8 @@ const containerNotPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vec
 }
 
 const containerNotPanoramicCanvasNotPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
-    if (containerSize.y * ratio > containerSize.x)
-        return new Vector2(containerSize.x, containerSize.y / ratio)
+    if (containerSize.y * ratio >= containerSize.x)
+        return new Vector2(containerSize.x, containerSize.x / ratio)
     else
         return new Vector2(containerSize.y * ratio, containerSize.y)
 }

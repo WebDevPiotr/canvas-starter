@@ -67,7 +67,6 @@ class Controller {
     }
 
     private handleMouseScroll(e: WheelEvent) {
-
         if (e.deltaY > 0) this.camera.zoomIn()
         else this.camera.zoomOut()
         this.renderer.render(this.scene, this.camera)
@@ -75,8 +74,7 @@ class Controller {
 
     public handleResize() {
         const size: Vector2 = this.resizer.resize()
-        this.renderer.canvas.style.width = `${size.x}px`
-        this.renderer.canvas.style.height = `${size.y}px`
+        this.renderer.setRenderSize(size)
         this.camera.setRenderMatrix(this.renderer.size, size)
     }
 

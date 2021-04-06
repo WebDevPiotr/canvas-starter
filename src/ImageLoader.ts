@@ -33,4 +33,5 @@ class ImageLoader {
 }
 
 export default ImageLoader
+
 export type ImageSource = File | string

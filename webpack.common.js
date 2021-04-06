@@ -7,10 +7,6 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, './src'), 'node_modules'],
     extensions: ['.js', '.ts', '.scss'],
-    alias: {
-      App: path.resolve(__dirname, 'src/app/'),
-      Utils: path.resolve(__dirname, 'src/utils/'),
-    },
   },
   module: {
     rules: [
