@@ -1,5 +1,5 @@
-import Vector from './Utils/Vector2'
-import Matrix from './Utils/Matrix3'
+import Vector2 from './Utils/Vector2'
+import Matrix3 from './Utils/Matrix3'
 import Renderer from './Renderer'
 import Camera from './Camera'
 import CanvasResizer from './CanvasResizer'
@@ -12,7 +12,7 @@ class Controller {
     private camera: Camera
     private resizer: CanvasResizer
     private isMouseDown: boolean = false
-    private savedPosition: Vector
+    private savedPosition: Vector2
 
     constructor(scene: Scene, renderer: Renderer, camera: Camera) {
         this.scene = scene
@@ -74,7 +74,7 @@ class Controller {
     }
 
     public handleResize() {
-        const size: Vector = this.resizer.resize()
+        const size: Vector2 = this.resizer.resize()
         this.renderer.canvas.style.width = `${size.x}px`
         this.renderer.canvas.style.height = `${size.y}px`
         this.camera.setRenderMatrix(this.renderer.size, size)
@@ -82,7 +82,7 @@ class Controller {
 
     private getCoordinatesFromEvent(e: MouseEvent) {
         const canvas = this.renderer.canvas
-        return new Vector(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop)
+        return new Vector2(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop)
     }
 
 }

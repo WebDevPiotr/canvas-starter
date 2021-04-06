@@ -1,48 +1,24 @@
-import Vector from "./Vector2";
+import Vector2 from "./Vector2";
 
-class Matrix {
+class Matrix3 {
 
     private _values: Array<Array<number>>;
-    private _rows: number
-    private _columns: number
+    private _rows: number = 3
+    private _columns: number = 3
 
-    public static fromDimensions(rows: number, columns: number) {
-        const matrix = new Matrix()
-        matrix._values = Array.from({ length: rows }, () => new Array(columns).fill(0));
-        matrix._rows = rows
-        matrix._columns = columns
-        return matrix
-    }
-
-    public static fromValues(values: Array<Array<number>>) {
-        const matrix = Matrix.fromDimensions(values.length, values[0].length)
-
-        matrix.values[0][0] = values[0][0]
-        matrix.values[0][1] = values[0][1]
-        matrix.values[0][2] = values[0][2]
-
-        matrix.values[1][0] = values[1][0]
-        matrix.values[1][1] = values[1][1]
-        matrix.values[1][2] = values[1][2]
-
-        matrix.values[2][0] = values[2][0]
-        matrix.values[2][1] = values[2][1]
-        matrix.values[2][2] = values[2][2]
-
-        matrix._rows = values.length
-        matrix._columns = values[0].length
-        return matrix
+    constructor(values?: Array<Array<number>>){
+        this._values = values || Array.from({ length: this._rows }, () => new Array(this._columns).fill(0));
     }
 
     public static ones(){
-        return Matrix.fromValues([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+        return new Matrix3([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     }
 
-    public multiplyByMatrix(matrix: Matrix) {
+    public multiplyByMatrix(matrix: Matrix3) {
 
         if (this.columns !== matrix.rows) throw Error("Wrong dimensions of matrices")
 
-        const result = Matrix.fromDimensions(this.rows, this.columns);
+        const result = new Matrix3();
         const aV = this.values
         const bV = matrix.values
 
@@ -64,7 +40,7 @@ class Matrix {
 
     public multiplyByScalar(scalar: number) {
 
-        const result = Matrix.fromDimensions(this.rows, this.columns);
+        const result = new Matrix3();
         const aV = this.values
 
         result.values[0][0] = aV[0][0] * scalar
@@ -87,12 +63,12 @@ class Matrix {
         const transposedComplementMatrix = this.getComplementMatrix().getTransposedMatrix()
         const determinant = this.getDeterminant()
 
-        if (determinant === 0) return Matrix.fromDimensions(this.rows, this.columns);
+        if (determinant === 0) return new Matrix3();
         return transposedComplementMatrix.multiplyByScalar(1 / determinant)
     }
 
     public getComplementMatrix() {
-        const result = Matrix.fromDimensions(this.rows, this.columns);
+        const result = new Matrix3();
         const aV = this.values
 
         result.values[0][0] = aV[1][1] * aV[2][2] - aV[1][2] * aV[2][1]
@@ -111,7 +87,7 @@ class Matrix {
     }
 
     public getTransposedMatrix() {
-        const result = Matrix.fromDimensions(this.rows, this.columns);
+        const result = new Matrix3();
         const aV = this.values
 
         result.values[0][0] = aV[0][0] 
@@ -137,8 +113,8 @@ class Matrix {
         )
     }
 
-    public translate(vector: Vector){
-        const result = Matrix.fromValues(this.values);
+    public translate(vector: Vector2){
+        const result = new Matrix3(this.values);
 
         result.values[0][2] += vector.x
         result.values[1][2] += vector.y
@@ -152,4 +128,4 @@ class Matrix {
 
 }
 
-export default Matrix
+export default Matrix3

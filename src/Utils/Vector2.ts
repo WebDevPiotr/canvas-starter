@@ -1,4 +1,4 @@
-import Matrix from "./Matrix3";
+import Matrix3 from "./Matrix3";
 
 class Vector {
 
@@ -19,11 +19,11 @@ class Vector {
         return new Vector(this._x, this._y)
     }
 
-    public transformWithMatrix(matrix: Matrix) {
+    public transformWithMatrix(matrix: Matrix3) {
         const mV = matrix.values
 
         let x = this.x * mV[0][0] + this.y * mV[0][1] + mV[0][2]
-        let y = this.y * mV[1][0] + this.y * mV[1][1] + mV[1][2]
+        let y = this.x * mV[1][0] + this.y * mV[1][1] + mV[1][2]
 
         return new Vector(x, y)
     }

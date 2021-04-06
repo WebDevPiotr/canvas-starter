@@ -1,5 +1,5 @@
-import Matrix from './Utils/Matrix3'
-import Vector from './Utils/Vector2'
+import Matrix3 from './Utils/Matrix3'
+import Vector2 from './Utils/Vector2'
 import { clamp } from './Utils/Math'
 
 type Viewport = {
@@ -13,28 +13,28 @@ class Camera {
 
     private _zoomScalar: number = 1
 
-    private _projection: Matrix = Matrix.ones()
-    private _localToGlobal: Matrix = Matrix.ones()
+    private _projection: Matrix3 = Matrix3.ones()
+    private _localToGlobal: Matrix3 = Matrix3.ones()
 
-    private _zoom: Matrix = Matrix.ones()
-    private _zoomInv: Matrix = Matrix.ones()
+    private _zoom: Matrix3 = Matrix3.ones()
+    private _zoomInv: Matrix3 = Matrix3.ones()
 
-    private _translate: Matrix = Matrix.ones()
-    private _translateInv: Matrix = Matrix.ones()
+    private _translate: Matrix3 = Matrix3.ones()
+    private _translateInv: Matrix3 = Matrix3.ones()
 
-    private _render: Matrix = Matrix.ones()
+    private _render: Matrix3 = Matrix3.ones()
 
-    private _canvasSize: Vector = new Vector()
+    private _canvasSize: Vector2 = new Vector2()
 
-    public setRenderMatrix(canvasSize: Vector, renderSize: Vector) {
+    public setRenderMatrix(canvasSize: Vector2, renderSize: Vector2) {
         this._canvasSize = canvasSize
-        this._projection = Matrix.fromValues([[1, 0, canvasSize.x / 2], [0, -1, canvasSize.y / 2], [0, 0, 1]])
-        let renderScale = Matrix.fromValues([[renderSize.x / canvasSize.x, 0, 0], [0, renderSize.y / canvasSize.y, 0], [0, 0, 1]])
+        this._projection = new Matrix3([[1, 0, canvasSize.x / 2], [0, -1, canvasSize.y / 2], [0, 0, 1]])
+        let renderScale = new Matrix3([[renderSize.x / canvasSize.x, 0, 0], [0, renderSize.y / canvasSize.y, 0], [0, 0, 1]])
         this._localToGlobal = renderScale.multiplyByMatrix(this._projection).getInverseMatrix()
         this.update()
     }
 
-    public move(vector: Vector) {
+    public move(vector: Vector2) {
         this._translate = this._translate.translate(vector)
         this._translateInv = this._translate.getInverseMatrix()
         this.update()
@@ -42,7 +42,7 @@ class Camera {
 
     public zoomIn() {
         this._zoomScalar = clamp(this._zoomScalar * 1.1, 1, 3)
-        this._zoom = Matrix.fromValues([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
+        this._zoom = new Matrix3([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
         this._zoomInv = this._zoom.getInverseMatrix()
         this.update()
         this.checkViewport()
@@ -50,13 +50,13 @@ class Camera {
 
     public zoomOut() {
         this._zoomScalar = clamp(this._zoomScalar / 1.1, 1, 3)
-        this._zoom = Matrix.fromValues([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
+        this._zoom = new Matrix3([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
         this._zoomInv = this._zoom.getInverseMatrix()
         this.update()
         this.checkViewport()
     }
 
-    public getImageCoordinates(screenCoordinates: Vector): Vector {
+    public getImageCoordinates(screenCoordinates: Vector2): Vector2 {
         return screenCoordinates.transformWithMatrix(this._localToGlobal).transformWithMatrix(this._zoomInv).transformWithMatrix(this._translateInv)
     }
 
@@ -71,7 +71,7 @@ class Camera {
 
     private calcCorrection() {
         const { top, bottom, left, right } = this.calcViewport()
-        let correction = new Vector()
+        let correction = new Vector2()
         if (top > this._canvasSize.y / 2) correction.y = top - this._canvasSize.y / 2
         if (bottom < -this._canvasSize.y / 2) correction.y = bottom + this._canvasSize.y / 2
         if (left < -this._canvasSize.x / 2) correction.x = left + this._canvasSize.x / 2
@@ -90,9 +90,9 @@ class Camera {
         }
     }
 
-    get translate(): Matrix { return this._translate }
-    get translateInv(): Matrix { return this._translateInv }
-    get render(): Matrix { return this._render }
+    get translate(): Matrix3 { return this._translate }
+    get translateInv(): Matrix3 { return this._translateInv }
+    get render(): Matrix3 { return this._render }
 }
 
 export default Camera

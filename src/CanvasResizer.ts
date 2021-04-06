@@ -1,5 +1,5 @@
 import Renderer from "./Renderer"
-import Vector from "./Utils/Vector2"
+import Vector2 from "./Utils/Vector2"
 
 class CanvasResizer {
 
@@ -10,8 +10,8 @@ class CanvasResizer {
     }
 
     public resize() {
-        const containerSize: Vector = this.renderer.containerSize
-        const canvasSize: Vector = this.renderer.size
+        const containerSize: Vector2 = this.renderer.containerSize
+        const canvasSize: Vector2 = this.renderer.size
         const ratio = canvasSize.x / canvasSize.y
         const isContainerPanoramic = this.isPanoramic(containerSize)
         const isCanvasPanoramic = this.isPanoramic(canvasSize)
@@ -19,35 +19,35 @@ class CanvasResizer {
         return ResizeStrategyProvider.get(isContainerPanoramic, isCanvasPanoramic)(containerSize, ratio)
     }
 
-    private isPanoramic(size: Vector): boolean {
+    private isPanoramic(size: Vector2): boolean {
         return size.x > size.y
     }
 }
 
 export default CanvasResizer
 
-type ResizeStrategy = (containerSize: Vector, ratio: number) => Vector
+type ResizeStrategy = (containerSize: Vector2, ratio: number) => Vector2
 
-const containerPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vector, ratio: number): Vector => {
+const containerPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
     if (containerSize.x / ratio > containerSize.y)
-        return new Vector(containerSize.y * ratio, containerSize.y)
+        return new Vector2(containerSize.y * ratio, containerSize.y)
     else
-        return new Vector(containerSize.x, containerSize.x / ratio)
+        return new Vector2(containerSize.x, containerSize.x / ratio)
 }
 
-const containerPanoramicCanvasNotPanoramic: ResizeStrategy = (containerSize: Vector, ratio: number): Vector => {
-    return new Vector(containerSize.y * ratio, containerSize.y)
+const containerPanoramicCanvasNotPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
+    return new Vector2(containerSize.y * ratio, containerSize.y)
 }
 
-const containerNotPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vector, ratio: number): Vector => {
-    return new Vector(containerSize.x, containerSize.x / ratio)
+const containerNotPanoramicCanvasPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
+    return new Vector2(containerSize.x, containerSize.x / ratio)
 }
 
-const containerNotPanoramicCanvasNotPanoramic: ResizeStrategy = (containerSize: Vector, ratio: number): Vector => {
+const containerNotPanoramicCanvasNotPanoramic: ResizeStrategy = (containerSize: Vector2, ratio: number): Vector2 => {
     if (containerSize.y * ratio > containerSize.x)
-        return new Vector(containerSize.x, containerSize.y / ratio)
+        return new Vector2(containerSize.x, containerSize.y / ratio)
     else
-        return new Vector(containerSize.y * ratio, containerSize.y)
+        return new Vector2(containerSize.y * ratio, containerSize.y)
 }
 
 class ResizeStrategyProvider {

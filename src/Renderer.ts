@@ -1,5 +1,5 @@
 import Scene from "./Scene"
-import Vector from "./Utils/Vector2"
+import Vector2 from "./Utils/Vector2"
 import Camera from "./Camera"
 
 class Renderer {
@@ -7,7 +7,7 @@ class Renderer {
     private _container: HTMLDivElement
     private _canvas: HTMLCanvasElement
     private _context: CanvasRenderingContext2D
-    private _size: Vector
+    private _size: Vector2
 
     constructor(container: HTMLDivElement) {
         this._container = container
@@ -16,7 +16,7 @@ class Renderer {
         this._container.appendChild(this._canvas)
     }
 
-    public setSize(size: Vector) {
+    public setSize(size: Vector2) {
         this._size = size
         this.canvas.width = size.x
         this.canvas.height = size.y
@@ -38,8 +38,8 @@ class Renderer {
         this._context.restore()
     }
 
-    get size(): Vector { return this._size }
-    get containerSize(): Vector { return new Vector(this._container.clientWidth, this._container.clientHeight) }
+    get size(): Vector2 { return this._size }
+    get containerSize(): Vector2 { return new Vector2(this._container.clientWidth, this._container.clientHeight) }
     get canvas(): HTMLCanvasElement { return this._canvas }
 
 }
