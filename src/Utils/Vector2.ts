@@ -28,6 +28,10 @@ class Vector2 {
         return new Vector2(x, y)
     }
 
+    public isEmptyVector(){
+        return this._x === 0 && this.y === 0
+    }
+
     get x(): number { return this._x }
     get y(): number { return this._y }
     get length(): number { return this._length }

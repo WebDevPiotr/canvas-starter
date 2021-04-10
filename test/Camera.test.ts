@@ -28,8 +28,8 @@ describe('Camera tests', () => {
     })
 
     it('should move camera', () => {
-        camera.move(new Vector2(34, 372))
-        const translate = new Matrix3([[1, 0, 34], [0, 1, 372], [0, 0, 1]])
+        camera.move(new Vector2(34, 53))
+        const translate = new Matrix3([[1, 0, 34], [0, 1, 53], [0, 0, 1]])
         const render = projection.multiplyByMatrix(Matrix3.ones()).multiplyByMatrix(translate)
         expect(parse(camera.translate)).toEqual(translate)
         expect(parse(camera.translateInv)).toEqual(translate.getInverseMatrix())
@@ -68,7 +68,7 @@ describe('Camera tests', () => {
 
     it('should keep camera inside image after move', () => {
         camera.move(new Vector2(10000, 10000))
-        camera.checkViewport()
+        camera.keepInsideCanvas()
         const render = projection
         expect(parse(camera.translate)).toEqual(Matrix3.ones())
         expect(parse(camera.translateInv)).toEqual(Matrix3.ones())

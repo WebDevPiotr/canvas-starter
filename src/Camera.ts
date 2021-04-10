@@ -23,7 +23,8 @@ class Camera {
 
     private _render: Matrix3 = Matrix3.ones()
 
-    private _canvasSize: Vector2 = new Vector2()
+    private _viewport: Viewport
+    private _canvasSize: Vector2
 
     public setRenderMatrix(canvasSize: Vector2, renderSize: Vector2) {
         this._canvasSize = canvasSize
@@ -34,43 +35,56 @@ class Camera {
     }
 
     public move(vector: Vector2) {
-        this._translate = this._translate.translate(vector)
-        this._translateInv = this._translate.getInverseMatrix()
-        this.update()
+        this.updateTranslateMatrix(vector)
     }
 
     public zoomIn() {
         this._zoomScalar = clamp(this._zoomScalar * 1.1, 1, 3)
-        this._zoom = new Matrix3([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
-        this._zoomInv = this._zoom.getInverseMatrix()
-        this.update()
-        this.checkViewport()
+        this.updateZoomMatrix()
+        this.keepInsideCanvas()
     }
 
     public zoomOut() {
         this._zoomScalar = clamp(this._zoomScalar / 1.1, 1, 3)
-        this._zoom = new Matrix3([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
-        this._zoomInv = this._zoom.getInverseMatrix()
-        this.update()
-        this.checkViewport()
+        this.updateZoomMatrix()
+        this.keepInsideCanvas()
     }
 
     public getImageCoordinates(screenCoordinates: Vector2): Vector2 {
         return screenCoordinates.transformWithMatrix(this._localToGlobal).transformWithMatrix(this._zoomInv).transformWithMatrix(this._translateInv)
     }
 
-    public checkViewport() {
-        const correction = this.calcCorrection()
-        this.move(correction)
-    }
-
     private update() {
         this._render = this._projection.multiplyByMatrix(this._zoom).multiplyByMatrix(this._translate)
+        this.updateViewport()
     }
 
-    private calcCorrection() {
-        const { top, bottom, left, right } = this.calcViewport()
-        let correction = new Vector2()
+    private updateZoomMatrix() {
+        this._zoom = new Matrix3([[this._zoomScalar, 0, 0], [0, this._zoomScalar, 0], [0, 0, 1]])
+        this._zoomInv = this._zoom.getInverseMatrix()
+        this.update()
+    }
+
+    private updateTranslateMatrix(vector: Vector2) {
+        this._translate = this._translate.translate(vector)
+        this._translateInv = this._translate.getInverseMatrix()
+        this.update()
+    }
+
+    private updateViewport() {
+        const width = this._canvasSize.x / this._zoomScalar
+        const height = this._canvasSize.y / this._zoomScalar
+        this._viewport = {
+            top: -this._translate.values[1][2] + height / 2,
+            bottom: -this._translate.values[1][2] - height / 2,
+            right: -this._translate.values[0][2] + width / 2,
+            left: -this._translate.values[0][2] - width / 2,
+        }
+    }
+
+    private getCameraCorrection() {
+        const { top, bottom, left, right } = this._viewport
+        const correction = new Vector2()
         if (top > this._canvasSize.y / 2) correction.y = top - this._canvasSize.y / 2
         if (bottom < -this._canvasSize.y / 2) correction.y = bottom + this._canvasSize.y / 2
         if (left < -this._canvasSize.x / 2) correction.x = left + this._canvasSize.x / 2
@@ -78,14 +92,10 @@ class Camera {
         return correction
     }
 
-    private calcViewport(): Viewport {
-        let width = this._canvasSize.x / this._zoomScalar
-        let height = this._canvasSize.y / this._zoomScalar
-        return {
-            top: -this._translate.values[1][2] + height / 2,
-            bottom: -this._translate.values[1][2] - height / 2,
-            right: -this._translate.values[0][2] + width / 2,
-            left: -this._translate.values[0][2] - width / 2,
+    public keepInsideCanvas() {
+        const correction = this.getCameraCorrection()
+        if (!correction.isEmptyVector()) {
+            this.updateTranslateMatrix(correction)
         }
     }
 

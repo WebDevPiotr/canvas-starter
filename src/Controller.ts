@@ -62,7 +62,7 @@ class Controller {
 
     private handleMouseUp() {
         this.isMouseDown = false
-        this.camera.checkViewport()
+        this.camera.keepInsideCanvas()
         this.renderer.render(this.scene, this.camera)
     }
 
