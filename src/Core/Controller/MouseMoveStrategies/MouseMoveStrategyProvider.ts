@@ -5,7 +5,7 @@ import MoveStartegy from './Strategies/MoveStrategy'
 import RotationStrategy from './Strategies/RotationStrategy'
 import ResizeStrategy from './Strategies/ResizeStrategy'
 import MarkingStrategy from './Strategies/MarkingStartegy'
-
+import PanningStrategy from './Strategies/PanningStrategy'
 class MouseMoveStrategyProvider {
 
     static get(mode: ControllerModeType): IMouseMoveStrategy {
@@ -26,6 +26,8 @@ class MouseMoveStrategyProvider {
             case ControllerModeType.RESIZING_BL:
             case ControllerModeType.RESIZING_BR:
                 return new ResizeStrategy()
+            case ControllerModeType.PANNING:
+                return new PanningStrategy()
         }
     }
 }

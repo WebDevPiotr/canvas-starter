@@ -12,4 +12,11 @@ export type Intersection = {
     position: Vector
 }
 
+export enum ExportTypes {
+    PDF = 'PDF',
+    JPG = 'JPG',
+    PNG = 'PNG',
+    BMP = 'BMP'
+}
+
 export type ElementSource = File | string

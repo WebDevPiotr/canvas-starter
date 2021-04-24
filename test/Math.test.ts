@@ -1,4 +1,4 @@
-import { clamp } from '../src/Utils/Math'
+import { clamp } from 'Utils/Math'
 
 describe('Math tests', () => {
 

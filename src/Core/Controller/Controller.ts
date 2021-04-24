@@ -10,6 +10,8 @@ import MarkingBox from 'CanvasObjects/MarkingBox/MarkingBox'
 import { Intersection } from 'Core/types'
 import CanvasInspector from 'Core/CanvasInspector'
 import MouseDownStrategyProvider from './MouseDownStrategies/MouseDownStrategyProvider'
+import MouseMoveStrategyProvider from './MouseMoveStrategies/MouseMoveStrategyProvider'
+import MouseUpStrategyProvider from './MouseUpStrategies/MouseUpStrategyProvider'
 
 class Controller {
 
@@ -25,7 +27,7 @@ class Controller {
     private _selectedElement: MoveableElement
     private _selectionIndicator: SelectionIndicator
     private _markingBox: MarkingBox
-   // private _clipBoard: ClipBoard = new ClipBoard()
+    // private _clipBoard: ClipBoard = new ClipBoard()
 
     constructor(scene: Scene, renderer: Renderer, camera: Camera) {
         this._scene = scene
@@ -36,7 +38,6 @@ class Controller {
         this.handleMouseDown = this.handleMouseDown.bind(this)
         this.handleMouseMove = this.handleMouseMove.bind(this)
         this.handleMouseUp = this.handleMouseUp.bind(this)
-        this.handleMouseScroll = this.handleMouseScroll.bind(this)
         this.handleResize = this.handleResize.bind(this)
     }
 
@@ -44,7 +45,7 @@ class Controller {
         this.renderer.canvas.addEventListener('mousedown', this.handleMouseDown)
         this.renderer.canvas.addEventListener('mousemove', this.handleMouseMove)
         this.renderer.canvas.addEventListener('mouseup', this.handleMouseUp)
-        this.renderer.canvas.addEventListener('wheel', this.handleMouseScroll)
+        this.renderer.canvas.addEventListener('contextmenu', this.disableContextMenu)
         window.addEventListener('resize', this.handleResize)
     }
 
@@ -52,40 +53,40 @@ class Controller {
         this.renderer.canvas.removeEventListener('mousedown', this.handleMouseDown)
         this.renderer.canvas.removeEventListener('mousemove', this.handleMouseMove)
         this.renderer.canvas.removeEventListener('mouseup', this.handleMouseUp)
-        this.renderer.canvas.removeEventListener('wheel', this.handleMouseScroll)
+        this.renderer.canvas.removeEventListener('contextmenu', this.disableContextMenu)
         window.removeEventListener('resize', this.handleResize)
     }
 
     private handleMouseDown(e: MouseEvent) {
+        e.preventDefault()
         this._isMouseDown = true
         const screenPosition = this.getCoordinatesFromEvent(e)
         const imagePosition = this.camera.getImageCoordinates(screenPosition)
-        this._savedPosition = imagePosition.clone()
         const intersection = this.intersectScene(imagePosition)
-        MouseDownStrategyProvider.get(intersection, this.mode)?.execute(intersection, this)
+        MouseDownStrategyProvider.get(e.button, intersection, this.mode)?.execute(intersection, this)
         this.renderer.render(this.scene, this.camera, this)
-
     }
 
     private handleMouseMove(e: MouseEvent) {
+        e.preventDefault()
         if (this._isMouseDown) {
             const screenPosition = this.getCoordinatesFromEvent(e)
             const imagePosition = this.camera.getImageCoordinates(screenPosition)
-            this.camera.move(imagePosition.sub(this._savedPosition))
+            MouseMoveStrategyProvider.get(this.mode)?.execute(imagePosition, this)
             this.renderer.render(this.scene, this.camera, this)
         }
     }
 
-    private handleMouseUp() {
+    private handleMouseUp(e: MouseEvent) {
+        e.preventDefault()
         this._isMouseDown = false
-        this.camera.keepInsideCanvas()
+        MouseUpStrategyProvider.get(this.mode)?.execute(this)
         this.renderer.render(this.scene, this.camera, this)
     }
 
-    private handleMouseScroll(e: WheelEvent) {
-        if (e.deltaY > 0) this.camera.zoomIn()
-        else this.camera.zoomOut()
-        this.renderer.render(this.scene, this.camera, this)
+    private disableContextMenu(e: MouseEvent){
+        e.preventDefault()
+        return false
     }
 
     public handleResize() {
@@ -114,6 +115,9 @@ class Controller {
 
     get markingBox() { return this._markingBox }
     set markingBox(markingBox: MarkingBox) { this._markingBox = markingBox }
+
+    get savedPosition() { return this._savedPosition }
+    set savedPosition(position: Vector2) { this._savedPosition = position }
 
     get scene() { return this._scene }
     get renderer() { return this._renderer }

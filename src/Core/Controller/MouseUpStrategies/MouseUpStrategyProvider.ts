@@ -3,7 +3,7 @@ import ControllerModeType from '../ControllerModeType'
 import IMouseUpStrategy from './IMouseUpStrategy'
 import BackToSelectStrategy from './Strategies/BackToSelectStrategy'
 import EndMarkingStrategy from './Strategies/EndMarkingStrategy'
-
+import PanningStrategy from '../MouseUpStrategies/Strategies/PanningStrategy'
 class MouseUpStrategyProvider {
 
     static get(mode: ControllerModeType): IMouseUpStrategy {
@@ -22,6 +22,8 @@ class MouseUpStrategyProvider {
                 return new BackToSelectStrategy()
             case ControllerModeType.MARKING:
                 return new EndMarkingStrategy()
+            case ControllerModeType.PANNING:
+                return new PanningStrategy()
         }
     }
 }

@@ -12,15 +12,21 @@ class Vector2 {
     }
 
     public add(vector: Vector2) {
-        return new Vector2(this.x + vector.x, this.y + vector.y)
+        this.x += vector.x
+        this.y += vector.y
+        return this
     }
 
     public sub(vector: Vector2) {
-        return new Vector2(this.x - vector.x, this.y - vector.y)
+        this.x -= vector.x
+        this.y -= vector.y
+        return this
     }
 
     public divBy(factor: number) {
-        return new Vector2(this.x / factor, this.y / factor)
+        this.x /= factor
+        this.y /= factor
+        return this
     }
 
     public rotate(angle: number) {
@@ -28,7 +34,9 @@ class Vector2 {
         let s = Math.sin(angle)
         let x = this.x * c - this.y * s
         let y = this.x * s + this.y * c
-        return new Vector2(Number(x.toFixed(2)), Number(y.toFixed(2)))
+        this.x = Number(x.toFixed(2))
+        this.y = Number(y.toFixed(2))
+        return this
     }
 
     public clone(): Vector2 {

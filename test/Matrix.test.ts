@@ -1,5 +1,5 @@
-import Matrix3 from '../src/Utils/Matrix3'
-import Vector2 from '../src/Utils/Vector2'
+import Matrix3 from 'Utils/Matrix3'
+import Vector2 from 'Utils/Vector2'
 
 describe('Matrix tests', () => {
 

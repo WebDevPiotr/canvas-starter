@@ -38,6 +38,12 @@ class Camera {
         this.updateTranslateMatrix(vector)
     }
 
+    public setZoom(zoom: number) {
+        this._zoomScalar = clamp(zoom, 1, 3)
+        this.updateZoomMatrix()
+        this.keepInsideCanvas()
+    }
+
     public zoomIn() {
         this._zoomScalar = clamp(this._zoomScalar * 1.1, 1, 3)
         this.updateZoomMatrix()
@@ -51,7 +57,7 @@ class Camera {
     }
 
     public getImageCoordinates(screenCoordinates: Vector2): Vector2 {
-        return screenCoordinates.transformWithMatrix(this._localToGlobal).transformWithMatrix(this._zoomInv).transformWithMatrix(this._translateInv)
+        return screenCoordinates.clone().transformWithMatrix(this._localToGlobal).transformWithMatrix(this._zoomInv).transformWithMatrix(this._translateInv)
     }
 
     private update() {

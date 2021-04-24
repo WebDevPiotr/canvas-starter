@@ -3,6 +3,7 @@ enum ControllerModeType {
     SELECTED = 'SELECTED',
     MARKING = 'MARKING',
     
+    PANNING = 'PANNING',
     MOVING = 'MOVING',
     ROTATING = 'ROTATING',
 

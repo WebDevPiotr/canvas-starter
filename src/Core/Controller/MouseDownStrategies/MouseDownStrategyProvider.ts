@@ -8,11 +8,14 @@ import RotationStrategy from './Strategies/RotationStrategy'
 import ResizeStrategy from './Strategies/ResizeStrategy'
 import ControllerModeType from '../ControllerModeType'
 import MarkingStrategy from './Strategies/MarkingStrategy'
+import PanningStrategy from './Strategies/PanningStrategy'
 
 class MouseDownStrategyProvider {
 
-    static get(intersection: Intersection, mode: ControllerModeType): IMouseDownStrategy {
-        if (mode === ControllerModeType.MARKING)
+    static get(button: number, intersection: Intersection, mode: ControllerModeType): IMouseDownStrategy {
+        if (button === 2)
+            return new PanningStrategy()
+        else if (mode === ControllerModeType.MARKING)
             return new MarkingStrategy()
         else if (intersection.element === null)
             return new UnselectStartegy()

@@ -18,8 +18,8 @@ class ImageSprite extends MoveableElement {
         this.resizeToFitCanvas(context)
         const { position, size, originalSize: {width, height }, rotation, image } = this
         context.save()
-        context.translate(position.x, position.y);
-        context.rotate(rotation);
+        context.translate(position.x, -position.y);
+        context.rotate(-rotation);
         context.drawImage(image, 0,0, width, height, -size.width / 2, -size.height / 2, size.width, size.height)
         context.restore()
     }

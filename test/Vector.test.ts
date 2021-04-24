@@ -1,7 +1,7 @@
-import Matrix3 from '../src/Utils/Matrix3'
-import Vector2 from '../src/Utils/Vector2'
+import Matrix3 from 'Utils/Matrix3'
+import Vector2 from 'Utils/Vector2'
 
-describe('Vector tests', () => {
+describe('Vector2 tests', () => {
 
     it('should create default vector', () => {
         let vector = new Vector2()
@@ -34,6 +34,75 @@ describe('Vector tests', () => {
         let matrix = new Matrix3([[2, 5, 7], [6, 3, 4], [5, -2, -2]])
         let result = new Vector2(19, 16)
         expect(vector.transformWithMatrix(matrix)).toEqual(result)
+    })
+
+})
+
+
+describe('Vector2 tests', () => {
+
+
+    it('Check rotation (0,0)', () => {
+        let vector = new Vector2(5, 5)
+        let origin = new Vector2(0, 0)
+        let angle = Math.PI / 2
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(-5, 5))
+    })
+
+    it('Check rotation about origin (1 quarter)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = Math.PI / 2
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(5, 12))
+    })
+
+    it('Check rotation about origin (2 quarter)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = 3 * Math.PI / 4
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(1.46, 10.54))
+    })
+
+    it('Check rotation about origin (3 quarter)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = 5 * Math.PI / 4
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(1.46, 3.46))
+    })
+
+    it('Check rotation about origin (4 quarter)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = 7 * Math.PI / 4
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(8.54, 3.46))
+    })
+
+    it('Check rotation about origin (PI)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = Math.PI 
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(0, 7))
+    })
+
+    it('Check rotation about origin (negative angle)', () => {
+        let vector = new Vector2(10, 7)
+        let origin = new Vector2(5, 7)
+        let angle = - Math.PI /4 
+        let newVector = vector.rotateAboutOrigin(origin, angle)
+        expect(newVector).toEqual(new Vector2(8.54, 3.46))
+    })
+
+    it('Check calc angle between', () => {
+        let vectorFrom = new Vector2(5, 0)
+        let vectorTo = new Vector2(0, 5)
+        let angle = vectorTo.angleBetween(vectorFrom)
+        expect(angle).toEqual(Math.PI/2)
     })
 
 })

@@ -1,10 +1,10 @@
 import RenderableElement from 'CanvasObjects/Abstract/RenderableElement'
 import CanvasElementTypes from 'CanvasObjects/types'
 
-class SceneBackground extends RenderableElement {
+class Border extends RenderableElement {
 
     constructor(private _image: HTMLImageElement) {
-        super(CanvasElementTypes.Background)
+        super(CanvasElementTypes.Border)
         this.originalSize = { width: _image.width, height: _image.height }
         this.size = { width: _image.width, height: _image.height }
         this.ratio = _image.width / _image.height
@@ -19,4 +19,4 @@ class SceneBackground extends RenderableElement {
 
 }
 
-export default SceneBackground
+export default Border

@@ -21,7 +21,7 @@ abstract class MoveableElement extends RenderableElement implements IMoveable {
 
     public select(mousePosiition: Vector) {
         this._isSelected = true
-        this._offset = mousePosiition.sub(this.position)
+        this._offset = mousePosiition.clone().sub(this.position)
     }
 
     public deselect() {
@@ -29,11 +29,11 @@ abstract class MoveableElement extends RenderableElement implements IMoveable {
     }
 
     public move(mousePosiition: Vector) {
-        this.position = mousePosiition.sub(this._offset)
+        this.position = mousePosiition.clone().sub(this._offset)
     }
 
     public rotate(mousePosiition: Vector) {
-        this.rotation = mousePosiition.sub(this.position).angleBetween(new Vector(0, -1))
+        this.rotation = mousePosiition.sub(this.position).angleBetween(new Vector(0, 1))
     }
 
     public resize(newSize: Size, newPosition: Vector) {

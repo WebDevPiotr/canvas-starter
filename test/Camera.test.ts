@@ -1,6 +1,6 @@
-import Camera from '../src/Camera'
-import Vector2 from '../src/Utils/Vector2'
-import Matrix3 from '../src/Utils/Matrix3'
+import Camera from 'Core/Camera'
+import Vector2 from 'Utils/Vector2'
+import Matrix3 from 'Utils/Matrix3'
 import { parse } from './Utils'
 
 describe('Camera tests', () => {

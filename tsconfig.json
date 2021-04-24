@@ -11,12 +11,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,  
     "baseUrl": "src",
-    "paths": {
-      "Utils": ["src/Utils"],
-      "Core": ["src/Core"],
-      "CanvasObjects": ["src/CanvasObjects"]
-    }
   },
-  "include": ["src", "types.d.ts"],
-  "exclude": ["node_modules", "test"]
+  "include": ["src", "test","types.d.ts"],
+  "exclude": ["node_modules"]
 }

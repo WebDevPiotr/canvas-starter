@@ -21,5 +21,9 @@ document.querySelector('#IMAGE').addEventListener('change', (e) => {
     canvas.loadImage((e.target as HTMLInputElement).files[0])
 })
 
+document.querySelector('#BORDER').addEventListener('change', (e) => {
+    canvas.loadBorder((e.target as HTMLInputElement).files[0])
+})
+
 
 export default CanvasFacade

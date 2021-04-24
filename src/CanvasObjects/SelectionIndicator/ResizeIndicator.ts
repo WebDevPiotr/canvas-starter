@@ -21,8 +21,8 @@ class ResizeIndicator extends RenderableElement {
         const { position: ePos, rotation: eRot } = element
         const { position: iPos, size: iSize } = this
         context.save()
-        context.translate(ePos.x, ePos.y);
-        context.rotate(eRot);
+        context.translate(ePos.x, -ePos.y);
+        context.rotate(-eRot);
         context.beginPath();
         context.rect(iPos.x - iSize.width / 2, iPos.y - iSize.height / 2, iSize.width, iSize.height);
         context.strokeStyle = "#00ccff"

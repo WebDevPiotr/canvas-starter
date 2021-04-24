@@ -6,8 +6,9 @@ module.exports = {
   testRegex: '/test/.*(test|spec)\\.[jt]sx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   moduleNameMapper: {
-    '^App/(.*)$': '<rootDir>/src/app/$1',
-    '^Utils/(.*)$': '<rootDir>/src/utils/$1'
+    '^Core/(.*)$': '<rootDir>/src/Core/$1',
+    '^Utils/(.*)$': '<rootDir>/src/Utils/$1',
+    '^CanvasObjects/(.*)$': '<rootDir>/src/CanvasObjects/$1',
   },
   setupFiles: ["jest-canvas-mock"]
 }

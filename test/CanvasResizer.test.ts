@@ -1,6 +1,5 @@
-import CanvasResizer from '../src/CanvasResizer'
-import Renderer from '../src/Renderer'
-import Vector2 from '../src/Utils/Vector2'
+import CanvasResizer from 'Core/CanvasResizer'
+import Vector2 from 'Utils/Vector2'
 
 describe('Resizer tests', () => {
 
