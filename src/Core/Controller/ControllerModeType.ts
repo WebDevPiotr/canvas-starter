@@ -1,0 +1,19 @@
+enum ControllerModeType {
+    UNSELECTED = 'UNSELECTED',
+    SELECTED = 'SELECTED',
+    MARKING = 'MARKING',
+    
+    MOVING = 'MOVING',
+    ROTATING = 'ROTATING',
+
+    RESIZING_T = 'RESIZING_T',
+    RESIZING_TL = 'RESIZING_TL',
+    RESIZING_TR = 'RESIZING_TR',
+    RESIZING_R = 'RESIZING_R',
+    RESIZING_L = 'RESIZING_L',
+    RESIZING_B = 'RESIZING_B',
+    RESIZING_BL = 'RESIZING_BL',
+    RESIZING_BR = 'RESIZING_BR',
+}
+
+export default ControllerModeType

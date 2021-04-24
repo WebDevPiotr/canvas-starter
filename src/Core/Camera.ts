@@ -1,6 +1,6 @@
-import Matrix3 from './Utils/Matrix3'
-import Vector2 from './Utils/Vector2'
-import { clamp } from './Utils/Math'
+import Matrix3 from 'Utils/Matrix3'
+import Vector2 from 'Utils/Vector2'
+import { clamp } from 'Utils/Math'
 
 type Viewport = {
     top: number,

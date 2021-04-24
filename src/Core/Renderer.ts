@@ -1,13 +1,16 @@
-import Scene from "./Scene"
-import Vector2 from "./Utils/Vector2"
-import Camera from "./Camera"
+import Scene from "Core/Scene/Scene"
+import Vector2 from "Utils/Vector2"
+import Camera from "Core/Camera"
+import SceneLayer from "./Scene/SceneLayer"
+import MoveableElement from "CanvasObjects/Abstract/MoveableElement"
+import Controller from "Core/Controller/Controller"
 
 class Renderer {
 
     private _container: HTMLDivElement
     private _canvas: HTMLCanvasElement
     private _context: CanvasRenderingContext2D
-    private _size: Vector2
+    private _size: Vector2 = new Vector2()
 
     constructor(container: HTMLDivElement) {
         this._container = container
@@ -22,24 +25,27 @@ class Renderer {
         this.canvas.height = size.y
     }
 
-    public setRenderSize(size: Vector2){
+    public setRenderSize(size: Vector2) {
         this.canvas.style.width = `${size.x}px`
         this.canvas.style.height = `${size.y}px`
     }
 
-    public render(scene: Scene, camera: Camera){
+    public render(scene: Scene, camera: Camera, controller: Controller) {
+        this.clear()
+        this._context.save()
+        let r = camera.render.values
+        this._context.setTransform(r[0][0], r[1][0], r[0][1], -r[1][1], r[0][2], r[1][2])
+        if (scene.background) scene.background.draw(this._context)
+        if (scene.layers.length) scene.layers.forEach(({ element }: SceneLayer<MoveableElement>) => element.draw(this._context))
+        if (controller.selectionIndicator) controller.selectionIndicator.draw(this._context)
+        if (controller.markingBox) controller.markingBox.draw(this._context)
+        this._context.restore()
+    }
+
+    private clear() {
         this._context.save()
         this._context.fillStyle = 'white'
         this._context.fillRect(0, 0, this.size.x, this.size.y)
-    
-        let r = camera.render.values
-    
-        this._context.setTransform(r[0][0], r[1][0], r[0][1], -r[1][1], r[0][2], r[1][2])
-
-        scene.layers.forEach((image) => {
-            this._context.drawImage(image, -image.width / 2, -image.height / 2, image.width, image.height)
-        })
-
         this._context.restore()
     }
 

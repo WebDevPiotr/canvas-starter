@@ -1,4 +1,4 @@
-import Matrix3 from "./Matrix3";
+import Matrix3 from "Utils/Matrix3";
 
 class Vector2 {
 
@@ -11,12 +11,39 @@ class Vector2 {
         this._y = y
     }
 
+    public add(vector: Vector2) {
+        return new Vector2(this.x + vector.x, this.y + vector.y)
+    }
+
     public sub(vector: Vector2) {
         return new Vector2(this.x - vector.x, this.y - vector.y)
     }
 
+    public divBy(factor: number) {
+        return new Vector2(this.x / factor, this.y / factor)
+    }
+
+    public rotate(angle: number) {
+        let c = Math.cos(angle)
+        let s = Math.sin(angle)
+        let x = this.x * c - this.y * s
+        let y = this.x * s + this.y * c
+        return new Vector2(Number(x.toFixed(2)), Number(y.toFixed(2)))
+    }
+
     public clone(): Vector2 {
         return new Vector2(this._x, this._y)
+    }
+
+    public rotateAboutOrigin(origin: Vector2, angle: number) {
+        this.sub(origin)
+        this.rotate(angle)
+        this.add(origin)
+        return this
+    }
+
+    public angleBetween(vector: Vector2) {
+        return Math.atan2(this.y, this.x) - Math.atan2(vector.y, vector.x)
     }
 
     public transformWithMatrix(matrix: Matrix3) {
@@ -28,7 +55,7 @@ class Vector2 {
         return new Vector2(x, y)
     }
 
-    public isEmptyVector(){
+    public isEmptyVector() {
         return this._x === 0 && this.y === 0
     }
 

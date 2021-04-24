@@ -1,9 +1,10 @@
-import Scene from './Scene'
-import Renderer from './Renderer'
-import ImageLoader, { ImageSource } from './ImageLoader'
-import Camera from './Camera'
-import Controller from './Controller'
-import Vector2 from './Utils/Vector2'
+import Scene from 'Core/Scene/Scene'
+import Renderer from 'Core/Renderer'
+import ImageLoader, { ImageSource } from 'Utils/ImageLoader'
+import Camera from 'Core/Camera'
+import Controller from 'Core/Controller/Controller'
+import Vector2 from 'Utils/Vector2'
+import ImageSprite from 'CanvasObjects/Objects/ImageSprite'
 
 class CanvasFacade {
 
@@ -20,30 +21,34 @@ class CanvasFacade {
         this.controller.init()
     }
 
-    public async load(source: ImageSource, layerIndex: number) {
+    public async loadBackground(source: ImageSource) {
         const image: HTMLImageElement = await ImageLoader.load(source)
-        if(this.scene.layers.size === 0) {
-            const imageSize = new Vector2(image.width, image.height)
-            this.renderer.setSize(imageSize)
-            this.controller.handleResize()
-        }
-        this.scene.add(image, layerIndex)
-        this.renderer.render(this.scene, this.camera)
+        const imageSize = new Vector2(image.width, image.height)
+        this.renderer.setSize(imageSize)
+        this.controller.handleResize()
+        this.scene.setBackground(image)
+        this.renderer.render(this.scene, this.camera, this.controller)
     }
 
-    public remove(layerIndex: number) {
-        this.scene.remove(layerIndex)
-        this.renderer.render(this.scene, this.camera)
+    public async loadImage(source: ImageSource) {
+        const image: HTMLImageElement = await ImageLoader.load(source)
+        this.scene.add(image)
+        this.renderer.render(this.scene, this.camera, this.controller)
+    }
+
+    public remove(layer: ImageSprite) {
+        this.scene.remove(layer)
+        this.renderer.render(this.scene, this.camera, this.controller)
     }
 
     public zoomIn() {
         this.camera.zoomIn()
-        this.renderer.render(this.scene, this.camera)
+        this.renderer.render(this.scene, this.camera, this.controller)
     }
 
     public zoomOut() {
         this.camera.zoomOut()
-        this.renderer.render(this.scene, this.camera)
+        this.renderer.render(this.scene, this.camera, this.controller)
     }
 
     public unmount() {

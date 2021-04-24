@@ -1,5 +1,5 @@
-import Renderer from "./Renderer"
-import Vector2 from "./Utils/Vector2"
+import Renderer from "Core/Renderer"
+import Vector2 from "Utils/Vector2"
 
 class CanvasResizer {
 

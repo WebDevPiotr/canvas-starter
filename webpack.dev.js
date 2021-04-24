@@ -1,15 +1,20 @@
 const path = require("path");
-const common = require("./webpack.common");
-const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 const WorkerPlugin = require('worker-plugin');
 
-module.exports = merge(common, {
+module.exports = {
   mode: "development",
+  entry: {
+    main: "./src/index.dev.ts",
+  },
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist")
+  },
+  resolve: {
+    modules: [path.resolve(__dirname, './src'), 'node_modules'],
+    extensions: ['.js', '.ts', '.css'],
   },
   devServer: {
     port: 3000,
@@ -25,6 +30,25 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
+        test: /\.html$/,
+        use: ["html-loader"]
+      },
+      {
+        test: /\.(svg|png|jpg|gif)$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "[name].[hash].[ext]",
+            outputPath: "imgs"
+          }
+        }
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.css$/,
         use: [
           "style-loader", //3. Inject styles into DOM
@@ -34,4 +58,4 @@ module.exports = merge(common, {
       }
     ]
   }
-});
+};
