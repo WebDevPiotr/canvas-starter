@@ -7,17 +7,17 @@ module.exports = {
   entry: {
     main: "./src/index.ts",
   },
+  output: {
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist"),
+    libraryTarget: 'umd',
+  },
   resolve: {
     modules: [path.resolve(__dirname, './src'), 'node_modules'],
     extensions: ['.js', '.ts'],
   },
-  output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "dist"),
-    library: 'test',
-    libraryTarget: 'umd',
-  },
   optimization: {
+    minimize: true,
     minimizer: [
       new TerserPlugin(),
     ]

@@ -4,20 +4,39 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Web3d template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0 user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta property="og:title" content="Canvas template" />
+    <meta property="og:description" content="Canvas starter" />
+    <title>Canvas Template</title>
 </head>
 
 <body>
     <div class="canvasWindow">
         <div class="canvasContainer"></div>
-        <button id="plus">+</button>
-        <button id="minus">-</button>
-        <label id="BACKGROUND-INPUT" for="BACKGROUND">Tło</label>
-        <label id="IMAGE-INPUT" for="IMAGE">Zdjęcie</label>
-        <label id="BORDER-INPUT" for="BORDER">Ramka</label>
+
+        <div class="canvasButtons">
+            <div class="row">
+                <label class="button" id="BACKGROUND-INPUT" for="BACKGROUND">Backgroud</label>
+                <label class="button" id="IMAGE-INPUT" for="IMAGE">Add Image</label>
+            </div>
+
+            <div class="row">
+                <label class="button" id="JSON-INPUT" for="JSON">Load</label>
+                <button class="button" id="zapisz">Save</button>
+                <button class="button" id="eksportuj">Export</button>
+            </div>
+
+            <div class="row">
+                <button class="button" id="plus">+</button>
+                <button class="button" id="minus">-</button>
+            </div>
+        </div>
+
         <input type="file" id="BACKGROUND" style="display: none;" />
         <input type="file" id="IMAGE" style="display: none;" />
         <input type="file" id="BORDER" style="display: none;" />
+        <input type="file" id="JSON" style="display: none;" />
     </div>
 </body>
 

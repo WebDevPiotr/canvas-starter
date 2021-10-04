@@ -12,6 +12,8 @@ type Viewport = {
 class Camera {
 
     private _projection: Matrix3 = Matrix3.ones()
+    private _renderScale: Matrix3 = Matrix3.ones()
+    private _renderScaleScalar: number
     private _localToGlobal: Matrix3 = Matrix3.ones()
 
     private _zoomScalar: number = 1
@@ -29,8 +31,9 @@ class Camera {
     public setRenderMatrix(canvasSize: Vector2, renderSize: Vector2) {
         this._canvasSize = canvasSize
         this._projection = new Matrix3([[1, 0, canvasSize.x / 2], [0, -1, canvasSize.y / 2], [0, 0, 1]])
-        let renderScale = new Matrix3([[renderSize.x / canvasSize.x, 0, 0], [0, renderSize.y / canvasSize.y, 0], [0, 0, 1]])
-        this._localToGlobal = renderScale.multiplyByMatrix(this._projection).getInverseMatrix()
+        this._renderScale = new Matrix3([[renderSize.x / canvasSize.x, 0, 0], [0, renderSize.y / canvasSize.y, 0], [0, 0, 1]])
+        this._renderScaleScalar = renderSize.x / canvasSize.x
+        this._localToGlobal = this._renderScale.multiplyByMatrix(this._projection).getInverseMatrix()
         this.update()
     }
 
@@ -105,13 +108,25 @@ class Camera {
         }
     }
 
+    public calcSizeScale(): number {
+        const { renderScale, zoomScalar } = this
+        if (this._canvasSize.y >= this._canvasSize.x) return 1 / renderScale.values[1][1] / zoomScalar
+        else return 1 / renderScale.values[0][0] / zoomScalar
+    }
+
     get projection(): Matrix3 { return this._projection }
+    get renderScale(): Matrix3 { return this._renderScale }
     get localToGlobal(): Matrix3 { return this._localToGlobal }
+    get render(): Matrix3 { return this._render }
+
     get translate(): Matrix3 { return this._translate }
     get translateInv(): Matrix3 { return this._translateInv }
+
     get zoom(): Matrix3 { return this._zoom }
     get zoomInv(): Matrix3 { return this._zoomInv }
-    get render(): Matrix3 { return this._render }
+    get zoomScalar(): number { return this._zoomScalar }
+    get renderScaleScalar(): number { return this._renderScaleScalar }
+
 }
 
 export default Camera

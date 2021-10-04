@@ -1,4 +1,4 @@
-import SceneController from 'Core/Controller/Controller';
+import Controller from 'Core/Controller/Controller';
 import IMouseDownStrategy from '../IMouseDownStrategy'
 import ControllerModeType from 'Core/Controller/ControllerModeType';
 import ResizeIndicator from 'CanvasObjects/SelectionIndicator/ResizeIndicator'
@@ -7,7 +7,7 @@ import Placement from 'CanvasObjects/SelectionIndicator/Placement';
 
 class ResizeStrategy implements IMouseDownStrategy {
 
-    public execute(intersection: Intersection, controller: SceneController) {
+    public execute(controller: Controller, intersection: Intersection) {
         const element = intersection.element as ResizeIndicator
         switch (element.placement) {
             case Placement.TOP:

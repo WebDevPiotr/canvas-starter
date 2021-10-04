@@ -18,14 +18,22 @@ module.exports = {
   },
   devServer: {
     port: 3000,
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
   },
-  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html"
     }),
     new Dotenv(),
-    new WorkerPlugin()
   ],
   module: {
     rules: [
@@ -51,9 +59,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          "style-loader", //3. Inject styles into DOM
-          "css-loader", //2. Turns css into commonjs
-          // "sass-loader" //1. Turns sass into css
+          "style-loader",
+          "css-loader",
         ]
       }
     ]

@@ -1,29 +1,26 @@
 import MoveableElement from "CanvasObjects/Abstract/MoveableElement";
 import RenderableElement from 'CanvasObjects/Abstract/RenderableElement'
 import { Intersection, Size } from "Core/types";
-import Vector from "Utils/Vector2"; 
+import Vector from "Utils/Vector2";
 import SceneController from "Core/Controller/Controller";
 import SceneLayer from 'Core/Scene/SceneLayer'
 
 class CanvasInspector {
 
-    public findClickedElement(clickPosition: Vector, layers: SceneLayer<MoveableElement>[], controller: SceneController): Intersection {
+    public findClickedElement(clickPosition: Vector, layers: SceneLayer<MoveableElement>[], controller: SceneController, scale: number): Intersection {
         let clickedLayer: SceneLayer<MoveableElement>
 
         if (controller.selectionIndicator) {
             let indicators = controller.selectionIndicator.elements
             for (let indicator of indicators) {
-                if (this.isIndicatorClicked(clickPosition, indicator, controller.selectedElement))
+                if (this.isIndicatorClicked(clickPosition, indicator, controller.selectedElement, scale))
                     return { element: indicator, position: clickPosition }
             }
         }
 
         for (let layer of layers) {
             if (this.isElementClicked(clickPosition, layer.element)) {
-                if (!clickedLayer)
-                    clickedLayer = layer
-                else if (clickedLayer.index < layer.index)
-                    clickedLayer = layer
+                clickedLayer = layer
             }
         }
 
@@ -36,12 +33,13 @@ class CanvasInspector {
         return this.isClicked(clickPosInElementCoord, position, size)
     }
 
-    private isIndicatorClicked(clickPosition: Vector, indicator: RenderableElement, element: RenderableElement): boolean {
+    private isIndicatorClicked(clickPosition: Vector, indicator: RenderableElement, element: RenderableElement, scale: number): boolean {
         const { position: ePos, rotation } = element
         const { position: iPos, size } = indicator
         let indicatorPosition = ePos.clone().add(iPos)
         let clickPosInElementCoord = clickPosition.clone().rotateAboutOrigin(ePos, -rotation)
-        return this.isClicked(clickPosInElementCoord, indicatorPosition, size)
+        const scaledSize: Size = { width: size.width * scale, height: size.height * scale }
+        return this.isClicked(clickPosInElementCoord, indicatorPosition, scaledSize)
     }
 
     private isClicked(clickPosition: Vector, elementPosition: Vector, elementSize: Size): boolean {

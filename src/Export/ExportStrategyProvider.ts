@@ -1,6 +1,7 @@
 import JPGExportStrategy from './Strategies/JPGExportStrategy'
 import PNGExportStrategy from './Strategies/PNGExportStrategy'
 import BMPExportStrategy from './Strategies/BMPExportStrategy'
+import PDFExportStrategy from './Strategies/PDFExportStrategy'
 import ExportTypes from './types'
 import IExportStrategy from './IExportStrategy'
 
@@ -14,6 +15,8 @@ class RenderStrategyProvider {
                 return new PNGExportStrategy()
             case ExportTypes.BMP:
                 return new BMPExportStrategy()
+            case ExportTypes.PDF:
+                return new PDFExportStrategy()
         }
     }
 }

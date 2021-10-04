@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html{
+    font-size: 16px;
+}
+
 body {
     width: 100%;
     height: 100vh;
@@ -14,8 +18,8 @@ body {
     flex-direction: column;
 }
 
-label{
-    color: white;
+button{
+    border: none;
 }
 
 .canvasWindow {
@@ -32,6 +36,32 @@ label{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 50%;
+    width: 80%;
+    height: 100%;
+}
+
+.canvasButtons {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row{
+    display: flex;
+    align-items: center;
+}
+
+.button{
+    flex: 1;
+    background-color: grey;
+    margin: 0.6em 0.4em;
+    padding: 0.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5em;
+    font-size: 0.8rem;
+    color: white;
 }

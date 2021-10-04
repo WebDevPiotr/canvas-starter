@@ -6,6 +6,7 @@ import ResizeIndicator from './ResizeIndicator'
 import RotationIndicator from './RotationIndicator'
 import Placement from './Placement'
 import RenderableElement from 'CanvasObjects/Abstract/RenderableElement'
+import Camera from 'Core/Camera'
 
 class SelectionIndicator extends CompundElement {
 
@@ -28,7 +29,7 @@ class SelectionIndicator extends CompundElement {
             new ResizeIndicator(new Vector(-size.width / 2, 0), Placement.LEFT),
             new ResizeIndicator(new Vector(0, -size.height / 2), Placement.BOTTOM),
             new ResizeIndicator(new Vector(0, size.height / 2), Placement.TOP),
-            new RotationIndicator(new Vector(0, size.height / 2 + 40))
+            new RotationIndicator(new Vector(0, size.height / 2 + 60))
         )
         return indicator
     }
@@ -43,20 +44,21 @@ class SelectionIndicator extends CompundElement {
         this.elements[5].position = new Vector(-size.width / 2, 0)
         this.elements[6].position = new Vector(0, -size.height / 2)
         this.elements[7].position = new Vector(0, size.height / 2)
-        this.elements[8].position = new Vector(0, size.height / 2 + 40)
+        this.elements[8].position = new Vector(0, size.height / 2 + 60)
     }
 
-    public draw(context: CanvasRenderingContext2D) {
+    public draw(context: CanvasRenderingContext2D, camera: Camera) {
         context.save()
-        this.drawBorder(context)
-        this.elements.forEach(indicator => indicator.draw(context, this.element))
+        const scale = camera.calcSizeScale()
+        this.drawBorder(context, scale)
+        this.elements.forEach(indicator => indicator.draw(context, this.element, scale))
         context.restore()
     }
 
-    private drawBorder(context: CanvasRenderingContext2D) {
+    private drawBorder(context: CanvasRenderingContext2D, scale: number) {
         const { position, size, rotation } = this.element
         context.save()
-        context.lineWidth = 2;
+        context.lineWidth = Math.round(2 * scale)
         context.strokeStyle = "#00ccff";
         context.translate(position.x, -position.y);
         context.rotate(-rotation);
@@ -65,6 +67,8 @@ class SelectionIndicator extends CompundElement {
         context.stroke();
         context.restore()
     }
+
+
 
 }
 

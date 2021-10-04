@@ -5,7 +5,7 @@ import ControllerModeType from 'Core/Controller/ControllerModeType';
 
 class PanningStrategy implements IMouseDownStrategy {
 
-    public execute(intersection: Intersection, controller: Controller) {
+    public execute(controller: Controller, intersection: Intersection) {
         controller.savedPosition = intersection.position.clone()
         controller.mode = ControllerModeType.PANNING
     }

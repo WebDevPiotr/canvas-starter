@@ -7,7 +7,7 @@ class BMPExportStrategy implements IExportStrategy {
         BMPExporter.toDataURL(canvas, (url: string) => {
             let a = document.createElement("a");
             a.href = url;
-            a.download = `Image.jpg`;
+            a.download = `Image.bmp`;
             a.click();
         })
     }

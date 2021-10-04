@@ -16,6 +16,7 @@ class Renderer {
         this._container = container
         this._canvas = document.createElement('canvas')
         this._context = this._canvas.getContext('2d')
+        this.setSize(new Vector2(800, 800))
         this._container.appendChild(this._canvas)
     }
 
@@ -37,10 +38,13 @@ class Renderer {
         this._context.setTransform(r[0][0], r[1][0], r[0][1], -r[1][1], r[0][2], r[1][2])
         if (scene.background) scene.background.draw(this._context)
         if (scene.layers.length) scene.layers.forEach(({ element }: SceneLayer<MoveableElement>) => element.draw(this._context))
-        if (scene.border) scene.border.draw(this._context)
-        if (controller.selectionIndicator) controller.selectionIndicator.draw(this._context)
+        if (controller.selectionIndicator) controller.selectionIndicator.draw(this._context, camera)
         if (controller.markingBox) controller.markingBox.draw(this._context)
         this._context.restore()
+    }
+
+    public reset(){
+        this.setSize(new Vector2(800, 800))
     }
 
     private clear() {
